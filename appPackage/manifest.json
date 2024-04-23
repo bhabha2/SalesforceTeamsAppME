@@ -1,47 +1,102 @@
 {
     "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+    "version": "1.0.4",
     "manifestVersion": "1.16",
-    "version": "1.0.0",
     "id": "${{TEAMS_APP_ID}}",
     "packageName": "com.microsoft.teams.extension",
+    "name": {
+        "short": "SalesforceHelperdev",
+        "full": "SalesForce Helper Bot for Microsoft Teams"
+    },
     "developer": {
         "name": "Teams App, Inc.",
         "websiteUrl": "https://www.example.com",
         "privacyUrl": "https://www.example.com/privacy",
         "termsOfUseUrl": "https://www.example.com/termofuse"
     },
-    "icons": {
-        "color": "color.png",
-        "outline": "outline.png"
-    },
-    "name": {
-        "short": "SalesforceTeamsAppME${{APP_NAME_SUFFIX}}",
-        "full": "full name for SalesforceTeamsAppME"
-    },
     "description": {
-        "short": "Find npm package by name.",
-        "full": "Find npm package according to the npm package name."
+        "short": "Help users fetch data from Salesforce",
+        "full": "Help users fetch data from Salesforce related to their accounts, contacts, and opportunities"
+    },
+    "icons": {
+        "outline": "outline.png",
+        "color": "color.png"
     },
     "accentColor": "#FFFFFF",
-    "bots": [],
+    "bots": [
+        {
+            "botId": "${{BOT_ID}}",
+            "scopes": [
+                "personal",
+                "team",
+                "groupchat"
+            ],
+            "isNotificationOnly": false,
+            "supportsCalling": false,
+            "supportsVideo": false,
+            "supportsFiles": false
+        }
+    ],
     "composeExtensions": [
         {
             "botId": "${{BOT_ID}}",
             "commands": [
                 {
-                    "id": "findNpmPackage",
+                    "id": "getAccountDetails",
+                    "type": "query",
+                    "title": "Get Account Details",
+                    "description": "Get details of accounts from SalesForce",
+                    "initialRun": false,
+                    "fetchTask": false,
                     "context": [
                         "compose",
                         "commandBox"
                     ],
-                    "description": "Find npm package according to the npm package name",
-                    "title": "Find Npm Package",
-                    "type": "query",
                     "parameters": [
                         {
-                            "name": "NpmPackageName",
-                            "title": "Npm Package Name",
-                            "description": "The name of the npm package to be searched",
+                            "name": "Account",
+                            "title": "Account Name",
+                            "description": "Account whose details needs to be fetched",
+                            "inputType": "text"
+                        }
+                    ]
+                },
+                {
+                    "id": "getAccountOpportunities",
+                    "type": "query",
+                    "title": "Lookup Account Opportunities",
+                    "description": "Lookup opportunities within an account",
+                    "initialRun": false,
+                    "fetchTask": false,
+                    "context": [
+                        "compose",
+                        "commandBox"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "Account",
+                            "title": "Account",
+                            "description": "Name of the Account whose opportunities need to be looked up",
+                            "inputType": "text"
+                        }
+                    ]
+                },
+                {
+                    "id": "getOpportunitiesByOwner",
+                    "type": "query",
+                    "title": "Opportunity Search by Owner",
+                    "description": "Lookup opportunities across accounts by owner",
+                    "initialRun": false,
+                    "fetchTask": false,
+                    "context": [
+                        "compose",
+                        "commandBox"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "Account Owner to be searched for opportunities",
+                            "title": "Account Owner",
+                            "description": "Name of the Account Owner whose opportunities need to be looked up",
                             "inputType": "text"
                         }
                     ]
@@ -49,11 +104,14 @@
             ]
         }
     ],
-    "configurableTabs": [],
-    "staticTabs": [],
-    "permissions": [
-        "identity",
-        "messageTeamMembers"
+    "validDomains": [
+        "token.botframework.com",
+        "*.my.salesforce.com",
+        "*.lightning.force.com",
+        "${{BOT_DOMAIN}}"
     ],
-    "validDomains": []
+    "webApplicationInfo": {
+        "id": "${{BOT_ID}}",
+        "resource": "api://${{BOT_ID}}"
+    }
 }

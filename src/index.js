@@ -1,47 +1,55 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 // index.js is used to setup and configure your bot
+// Import required pckages
+const path = require('path');
+// Read botFilePath and botFileSecret from .env file.
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
 
-// Import required packages
-const restify = require("restify");
-
+const restify = require('restify');
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
-const {
-  CloudAdapter,
-  ConfigurationServiceClientCredentialFactory,
-  ConfigurationBotFrameworkAuthentication,
-} = require("botbuilder");
-const { SearchApp } = require("./searchApp");
-const config = require("./config");
+const { CloudAdapter, ConfigurationServiceClientCredentialFactory, ConfigurationBotFrameworkAuthentication,
+  ConversationState, UserState, MemoryStorage} = require("botbuilder");
+// const { TeamsMessagingExtensionsSearchAuthConfigBot } = require('./bots/teamsMessagingExtensionsSearchAuthConfigBot');
+const { SearchApp } = require('./searchApp');
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
-  MicrosoftAppId: config.botId,
-  MicrosoftAppPassword: config.botPassword,
-  MicrosoftAppType: "MultiTenant",
+  MicrosoftAppId: process.env.MicrosoftAppId,
+  MicrosoftAppPassword: process.env.MicrosoftAppPassword,
+  MicrosoftAppType: "MultiTenant"
 });
 
 const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
-  {},
+  {}, 
   credentialsFactory
 );
 
 const adapter = new CloudAdapter(botFrameworkAuthentication);
 
 adapter.onTurnError = async (context, error) => {
-  // This check writes out errors to console log .vs. app insights.
-  // NOTE: In production environment, you should consider logging this to Azure
-  //       application insights. See https://aka.ms/bottelemetry for telemetry
-  //       configuration instructions.
   console.error(`\n [onTurnError] unhandled error: ${error}`);
+await context.sendTraceActivity(
+  'OnTurnError Trace',
+  `${ error }`,
+  'https://www.botframework.com/schemas/error',
+  'TurnError'
+);
 
-  // Send a message to the user
-  await context.sendActivity(`The bot encountered an unhandled error:\n ${error.message}`);
-  await context.sendActivity("To continue to run this bot, please fix the bot source code.");
+// Uncomment below commented line for local debugging.
+await context.sendActivity(`Sorry, it looks like something went wrong. Exception Caught: ${error}`);
 };
 
+const memoryStorage = new MemoryStorage();
+const userState = new UserState(memoryStorage);
+const conversationState = new ConversationState(memoryStorage);
 // Create the bot that will handle incoming messages.
-const searchApp = new SearchApp();
+// const bot = new TeamsMessagingExtensionsSearchAuthConfigBot(userState);
+// const bot = new SearchApp(userState);
+const searchApp = new SearchApp(conversationState, userState);
 
 // Create HTTP server.
 const server = restify.createServer();
@@ -57,9 +65,7 @@ server.post("/api/messages", async (req, res) => {
   });
 });
 
-// Gracefully shutdown HTTP server
-["exit", "uncaughtException", "SIGINT", "SIGTERM", "SIGUSR1", "SIGUSR2"].forEach((event) => {
-  process.on(event, () => {
-    server.close();
-  });
-});
+// Serve up static files in the public directory (namely: searchSettings.html)
+// server.get('/public/*', restify.plugins.serveStatic({
+//     directory: __dirname
+// }));

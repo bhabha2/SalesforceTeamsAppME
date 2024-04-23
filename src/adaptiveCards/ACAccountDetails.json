@@ -1,0 +1,48 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "${user}",
+            "wrap": true,
+            "style": "heading",
+            "size": "Large"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "title": "Title",
+                            "value": "${businessTitle}"
+                        },
+                        {
+                            "title": "Email",
+                            "value": "${primaryWorkEmail}"
+                        },
+                        {
+                            "title": "Phone",
+                            "value": "${primaryWorkPhone}"
+                        },
+                        {
+                            "title": "Org",
+                            "value": "${primarySupervisoryOrganization}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "${id}",
+            "wrap": true,
+            "style": "default",
+            "size": "Default",
+            "isVisible":"false"
+        }
+    ]
+}
