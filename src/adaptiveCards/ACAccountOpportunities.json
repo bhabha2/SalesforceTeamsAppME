@@ -1,48 +1,143 @@
 {
     "type": "AdaptiveCard",
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.5",
+    "version": "1.6",
     "body": [
-        {
-            "type": "TextBlock",
-            "text": "${user}",
-            "wrap": true,
-            "style": "heading",
-            "size": "Large"
-        },
         {
             "type": "Container",
             "items": [
                 {
-                    "type": "FactSet",
-                    "facts": [
-                        {
-                            "title": "Title",
-                            "value": "${businessTitle}"
-                        },
-                        {
-                            "title": "Email",
-                            "value": "${primaryWorkEmail}"
-                        },
-                        {
-                            "title": "Phone",
-                            "value": "${primaryWorkPhone}"
-                        },
-                        {
-                            "title": "Org",
-                            "value": "${primarySupervisoryOrganization}"
-                        }
-                    ]
+                    "type": "TextBlock",
+                    "text": "${accountName}",
+                    "wrap": true,
+                    "id": "AccountName",
+                    "size": "Large"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "${accountType}",
+                    "wrap": true,
+                    "id": "AccountType"
                 }
             ]
         },
         {
-            "type": "TextBlock",
-            "text": "${id}",
-            "wrap": true,
-            "style": "default",
-            "size": "Default",
-            "isVisible":"false"
+            "type": "Container",
+            "spacing": "Large",
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "OPPORTUNITY",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "auto"
+                        },
+                        {
+                            "type": "Column",
+                            "spacing": "Large",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "STAGE",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "AMOUNT",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "CLOSE DATE",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "auto"
+                        }
+                    ]
+                }
+            ],
+            "bleed": true
+        },
+        {
+            "$data": "${opportunities}",
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${opportunityName}",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${opportunityStageName}",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${opportunityAmount}",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${opportunityCloseDate}",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ]
+                }
+            ],
+            "separator": true
         }
     ]
 }

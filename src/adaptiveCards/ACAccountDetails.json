@@ -1,48 +1,91 @@
 {
     "type": "AdaptiveCard",
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.5",
+    "version": "1.6",
     "body": [
-        {
-            "type": "TextBlock",
-            "text": "${user}",
-            "wrap": true,
-            "style": "heading",
-            "size": "Large"
-        },
         {
             "type": "Container",
             "items": [
                 {
-                    "type": "FactSet",
-                    "facts": [
+                    "type": "TextBlock",
+                    "text": "${name}",
+                    "wrap": true,
+                    "id": "AccountName",
+                    "size": "Large",
+                    "color": "Accent"
+                },
+                {
+                    "type": "Container",
+                    "items": [
                         {
-                            "title": "Title",
-                            "value": "${businessTitle}"
-                        },
-                        {
-                            "title": "Email",
-                            "value": "${primaryWorkEmail}"
-                        },
-                        {
-                            "title": "Phone",
-                            "value": "${primaryWorkPhone}"
-                        },
-                        {
-                            "title": "Org",
-                            "value": "${primarySupervisoryOrganization}"
+                            "type": "ColumnSet",
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "width": "stretch",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Type: ${type}",
+                                            "wrap": true,
+                                            "id": "AccountType"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Column",
+                                    "width": "stretch",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Account Owner:\n${owner}",
+                                            "wrap": true
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
             ]
         },
         {
-            "type": "TextBlock",
-            "text": "${id}",
-            "wrap": true,
-            "style": "default",
-            "size": "Default",
-            "isVisible":"false"
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${industry}",
+                                    "wrap": true,
+                                    "fontType": "Default",
+                                    "size": "Medium"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${website}",
+                                    "wrap": true,
+                                    "size": "Medium",
+                                    "fontType": "Default"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "style": "accent"
         }
     ]
 }

@@ -34,23 +34,37 @@ const ACAccountOpportunities = require("../adaptiveCards/ACAccountOpportunities.
           // const response = await runQuery(readQuery);
           console.log('\r\nresponse.data: ',JSON.stringify(response.data));
           const attachments = [];
-          let json = response.data;
-
+          let json = response.data.records;
+          console.log('\r\njson.length: ',json.length);
+          let opportunities = [];
           for (let i = 0; i < json.length; i++) {
             let item = json[i];
             // console.log('\r\n',item);
+            //factset : item.Opportunities.records,
+            //type, name, CloseDate, StageName,Amount
+            console.log('\r\nopp records:',JSON.stringify(item.Opportunities))
+            console.log('\r\nopp record length:',item.Opportunities.length)
+            for (let j = 0; j < item.Opportunities.records.length; j++) {
+              let item2 = item.Opportunities.records[j];
+              opportunities.push({
+                  opportunityName:item2.Name,
+                  opportunityCloseDate: item2.CloseDate,
+                  opportunityStageName: item2.StageName,
+                  opportunityAmount: item2.Amount,
+              });
+                  //type, name, CloseDate, StageName,Amount
+            }
+            console.log('\r\nopportunities: ',opportunities);
             const template = new ACData.Template(ACAccountOpportunities);
             const resultCard = template.expand({
               $root: {
-                name:item.records.name,
-                type: item.records.type,
-                //factset : item.records.Opportunities.records,
-                //type, name, CloseDate, StageName,Amount
-                
+                accountName:item.Name,
+                accountType: item.attributes.type,
+                opportunities: opportunities,
               },
               });
             console.log('\r\nresultCard: ',resultCard);
-            const preview = CardFactory.heroCard(item.name, item.industry);
+            const preview = CardFactory.heroCard(item.Name, item.attributes.type);
             const attachment = { ...CardFactory.adaptiveCard(resultCard), preview };
             attachments.push(attachment);
           }
@@ -70,18 +84,18 @@ const ACAccountOpportunities = require("../adaptiveCards/ACAccountOpportunities.
 }
 module.exports ={ COMMAND_ID, handleTeamsMessagingExtensionQuery };
 
+// let json = response.data.records;
+// json.Opportunities.records.length
+// response.data.records.Opportunities.records.length
 // response.data:  
-// {"totalSize":1,
-// "done":true,
-// "records":[
-//   {"attributes":
-//   {"type":"Account", "url":"/services/data/v59.0/sobjects/Account/001B000001OnByPIAV"},
-//   "Id":"001B000001OnByPIAV",
-//   "Name":"Air Tahiti",
-//   "Opportunities":
-//   {"totalSize":4,"done":true,"records":[
-//     {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEhIAI"},"Id":"006B0000007uoEhIAI","Name":"Acme - 1,200 Widgets","CloseDate":"2019-11-13","StageName":"Value Proposition"},
-//     {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEiIAI"},"Id":"006B0000007uoEiIAI","Name":"Acme - 600 Widgets","CloseDate":"2020-01-09","StageName":"Needs Analysis"},
-//     {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEjIAI"},"Id":"006B0000007uoEjIAI","Name":"Acme - 200 Widgets","CloseDate":"2020-03-13","StageName":"Prospecting"},
-//     {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B00000082RQ3IAM"},"Id":"006B00000082RQ3IAM","Name":"Engineering Services 787-9","CloseDate":"2022-11-30","StageName":"Negotiation/Review"}
-//   ]}}]}
+// {"totalSize":1,"done":true,"records":[
+//   {"attributes": {"type":"Account","url":"/services/data/v59.0/sobjects/Account/001B000001OnByPIAV"},"Id":"001B000001OnByPIAV","Name":"Air Tahiti",
+//     "Opportunities": {"totalSize":4,"done":true,"records":[
+//       {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEhIAI"},"Id":"006B0000007uoEhIAI","Name":"Acme - 1,200 Widgets","CloseDate":"2019-11-13","StageName":"Value Proposition","Amount":60000},
+//       {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEiIAI"},"Id":"006B0000007uoEiIAI","Name":"Acme - 600 Widgets","CloseDate":"2020-01-09","StageName":"Needs Analysis","Amount":70000},
+//       {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B0000007uoEjIAI"},"Id":"006B0000007uoEjIAI","Name":"Acme - 200 Widgets","CloseDate":"2020-03-13","StageName":"Prospecting","Amount":20000},
+//       {"attributes":{"type":"Opportunity","url":"/services/data/v59.0/sobjects/Opportunity/006B00000082RQ3IAM"},"Id":"006B00000082RQ3IAM","Name":"Engineering Services 787-9","CloseDate":"2022-11-30","StageName":"Negotiation/Review","Amount":20000000}
+//         ]
+//     }
+//   }
+// ]}

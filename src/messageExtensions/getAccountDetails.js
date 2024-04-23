@@ -39,6 +39,7 @@ const COMMAND_ID = "getAccountDetails";
             let item = json[i];
             // console.log('\r\n',item);
             const template = new ACData.Template(ACAccountDetails);
+
             const resultCard = template.expand({
               $root: {
                 id:item.Id,
@@ -50,7 +51,7 @@ const COMMAND_ID = "getAccountDetails";
               },
               });
             console.log('\r\nresultCard: ',resultCard);
-            const preview = CardFactory.heroCard(item.descriptor, item.businessTitle);
+            const preview = CardFactory.heroCard(item.Name, item.Type);
             const attachment = { ...CardFactory.adaptiveCard(resultCard), preview };
             attachments.push(attachment);
           }
@@ -71,5 +72,14 @@ const COMMAND_ID = "getAccountDetails";
 module.exports ={ COMMAND_ID, handleTeamsMessagingExtensionQuery };
 
 
-response.data:  {"searchRecords":[{"attributes":{"type":"Account","url":"/services/data/v60.0/sobjects/Account/001B000001OnByPIAV"},"Id":"001B000001OnByPIAV","Name":"Air Tahiti","Type":"Prospect","Industry":"Manufacturing","Website":"www.acme.com","Owner":{"attributes":{"type":"User","url":"/services/data/v60.0/sobjects/User/005B0000008A3YtIAK"},"Name":"Cameron Davis"}}]}
-resultCard:  {type: 'AdaptiveCard','$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',version: '1.5',body: [{type: 'TextBlock',text: '${user}',wrap: true,style: 'heading',size: 'Large'},{ type: 'Container', items: [Array] },{type: 'TextBlock',text: '001B000001OnByPIAV',wrap: true,style: 'default',size: 'Default',isVisible: 'false'}]}
+// response.data:  
+// {"searchRecords":[
+//   {"attributes":{"type":"Account","url":"/services/data/v60.0/sobjects/Account/001B000001OnByPIAV"},
+//   "Id":"001B000001OnByPIAV",
+//   "Name":"Air Tahiti",
+//   "Type":"Prospect",
+//   "Industry":"Manufacturing",
+//   "Website":"www.acme.com",
+//   "Owner":{"attributes":{"type":"User","url":"/services/data/v60.0/sobjects/User/005B0000008A3YtIAK"},"Name":"Cameron Davis"}
+// }]}
+// resultCard:  {type: 'AdaptiveCard','$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',version: '1.5',body: [{type: 'TextBlock',text: '${user}',wrap: true,style: 'heading',size: 'Large'},{ type: 'Container', items: [Array] },{type: 'TextBlock',text: '001B000001OnByPIAV',wrap: true,style: 'default',size: 'Default',isVisible: 'false'}]}
