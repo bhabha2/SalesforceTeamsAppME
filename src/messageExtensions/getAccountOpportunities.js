@@ -26,24 +26,24 @@ const ACAccountOpportunities = require("../adaptiveCards/ACAccountOpportunities.
         'Cookie': ''    
       },
     };
-    console.log('readQuery: ',readQuery);
-    console.log('config.url: ',config.url);
+    // console.log('readQuery: ',readQuery);
+    // console.log('config.url: ',config.url);
     try
     {
           const response = await axios.request(config);
           // const response = await runQuery(readQuery);
-          console.log('\r\nresponse.data: ',JSON.stringify(response.data));
+          // console.log('\r\nresponse.data: ',JSON.stringify(response.data));
           const attachments = [];
           let json = response.data.records;
-          console.log('\r\njson.length: ',json.length);
+          // console.log('\r\njson.length: ',json.length);
           let opportunities = [];
           for (let i = 0; i < json.length; i++) {
             let item = json[i];
             // console.log('\r\n',item);
             //factset : item.Opportunities.records,
             //type, name, CloseDate, StageName,Amount
-            console.log('\r\nopp records:',JSON.stringify(item.Opportunities))
-            console.log('\r\nopp record length:',item.Opportunities.length)
+            // console.log('\r\nopp records:',JSON.stringify(item.Opportunities))
+            // console.log('\r\nopp record length:',item.Opportunities.length)
             for (let j = 0; j < item.Opportunities.records.length; j++) {
               let item2 = item.Opportunities.records[j];
               opportunities.push({
@@ -54,7 +54,7 @@ const ACAccountOpportunities = require("../adaptiveCards/ACAccountOpportunities.
               });
                   //type, name, CloseDate, StageName,Amount
             }
-            console.log('\r\nopportunities: ',opportunities);
+            // console.log('\r\nopportunities: ',opportunities);
             const template = new ACData.Template(ACAccountOpportunities);
             const resultCard = template.expand({
               $root: {
@@ -63,7 +63,7 @@ const ACAccountOpportunities = require("../adaptiveCards/ACAccountOpportunities.
                 opportunities: opportunities,
               },
               });
-            console.log('\r\nresultCard: ',resultCard);
+            // console.log('\r\nresultCard: ',resultCard);
             const preview = CardFactory.heroCard(item.Name, item.attributes.type);
             const attachment = { ...CardFactory.adaptiveCard(resultCard), preview };
             attachments.push(attachment);

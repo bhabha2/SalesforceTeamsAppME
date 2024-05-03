@@ -24,13 +24,13 @@ const ACOpportunitiesByOwner = require("../adaptiveCards/ACOpportunitiesByOwner.
         'Cookie': ''    
       },
     };
-    console.log('readQuery: ',readQuery);
-    console.log('config.url: ',config.url);
+    // console.log('readQuery: ',readQuery);
+    // console.log('config.url: ',config.url);
     try
     {
           const response = await axios.request(config);
           // const response = await runQuery(readQuery);
-          console.log('\r\nresponse.data: ',JSON.stringify(response.data));
+          // console.log('\r\nresponse.data: ',JSON.stringify(response.data));
           const attachments = [];
           let json = response.data.records;
           for (let i = 0; i < json.length; i++) {
@@ -46,7 +46,7 @@ const ACOpportunitiesByOwner = require("../adaptiveCards/ACOpportunitiesByOwner.
                 opportunityAmount: item.Amount || 'Not Available',
               },
               });
-            console.log('\r\nresultCard: ',resultCard);
+            // console.log('\r\nresultCard: ',resultCard);
             const preview = CardFactory.heroCard(item.Account.Name, item.Name);
             const attachment = { ...CardFactory.adaptiveCard(resultCard), preview };
             attachments.push(attachment);

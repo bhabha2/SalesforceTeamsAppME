@@ -117,7 +117,7 @@ async run(context) {
         const userId = context.activity.from.id;
         const valueObj = context.activity.value;
         const tokenExchangeRequest = valueObj.authentication;
-        console.log("tokenExchangeRequest.token: " + tokenExchangeRequest.token);
+        // console.log("tokenExchangeRequest.token: " + tokenExchangeRequest.token);
   
         const userTokenClient = context.turnState.get(context.adapter.UserTokenClientKey);
   
@@ -127,7 +127,7 @@ async run(context) {
             context.activity.channelId,
             { token: tokenExchangeRequest.token });
   
-        console.log('tokenExchangeResponse: ' + JSON.stringify(tokenExchangeResponse));
+        // console.log('tokenExchangeResponse: ' + JSON.stringify(tokenExchangeResponse));
     } 
     catch (err) 
     {
@@ -140,7 +140,7 @@ async run(context) {
         return false;
     }
   
-    console.log('Exchanged token: ' + JSON.stringify(tokenExchangeResponse));
+    // console.log('Exchanged token: ' + JSON.stringify(tokenExchangeResponse));
     return true;
   }
 
@@ -166,8 +166,8 @@ async run(context) {
   );
 
   // console.log("\r\nToken Response.token: " + JSON.stringify(tokenResponse.token));
-  console.log("\r\nSignIn Link: " + signInLink);
-  console.log("\nuserTokeninCache: " + userTokeninCache);
+  // console.log("\r\nSignIn Link: " + signInLink);
+  // console.log("\nuserTokeninCache: " + userTokeninCache);
 
   //token is not in cache means user has not signed in yet
   if (!userTokeninCache) {
@@ -235,6 +235,7 @@ async run(context) {
       },
     };
   }
+  console.log('\r\n, Query: ',query.commandId)
     switch (query.commandId) {
       //call the relevant function to handle the query
       case getAccountDetails.COMMAND_ID:{
@@ -256,14 +257,14 @@ async onAdaptiveCardInvoke(context, invokeValue) {
 
   console.log('\r\nonAdaptiveCardInvoke, ');
   // console.log('\r\nonAdaptiveCardInvoke, ' + context.activity.value);
-  console.log('\r\nonInvoke, ' + context.activity.name);
+  // console.log('\r\nonInvoke, ' + context.activity.name);
   let runEvents = true;
-  console.log('onInvoke, ' + context.activity.value);
+  // console.log('onInvoke, ' + context.activity.value);
   try {
     const verb = invokeValue.action.verb;
     const data = invokeValue.action.data;
-    console.log('\r\nverb: ',verb);
-    console.log('\r\ndata: ',data);
+    // console.log('\r\nverb: ',verb);
+    // console.log('\r\ndata: ',data);
     const valueObj = context.activity.value;
     if (valueObj.authentication) {
         const authObj = valueObj.authentication;
@@ -291,20 +292,6 @@ async onAdaptiveCardInvoke(context, invokeValue) {
           console.log('\r\nrefresh action');
           return super.onInvokeActivity(context);
         }
-        //   return actionHandler.handleGetTeamInfo(context,cache.get(context.activity.from.id),data);
-        // }
-        // case 'getTeamInfo': {
-        //   console.log('\r\ngetTeamInfo action');
-        //   return actionHandler.handleGetTeamInfo(context,cache.get(context.activity.from.id),data);
-        // }
-        // case 'lookupRefresh': {
-        //   console.log('\r\nlookupRefresh');
-        //   return actionHandler.handlelookupRefresh(context,cache.get(context.activity.from.id),data);
-        // }
-        // case 'teamInfoRefresh': {
-        //   console.log('\r\nteamInfoRefresh');
-        //   return actionHandler.handleteamInfoRefresh(context,cache.get(context.activity.from.id),data);
-        // }
         default:
           runEvents = false;
           return super.onInvokeActivity(context);
@@ -324,7 +311,7 @@ async onAdaptiveCardInvoke(context, invokeValue) {
     }finally {
       if (runEvents) {
         this.defaultNextEvent(context)();
-        return { status: 200 };
+        // return { status: 200 };
       }
     }
 }

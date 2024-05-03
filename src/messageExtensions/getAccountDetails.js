@@ -24,15 +24,15 @@ const COMMAND_ID = "getAccountDetails";
         'Cookie': ''    
       },
     };
-            console.log('readQuery: ',readQuery);
-            console.log('config.url: ',config.url);
+            // console.log('readQuery: ',readQuery);
+            // console.log('config.url: ',config.url);
         // axios.request(config)
         // .then((response) => {
           try
           {
           const response = await axios.request(config);
           // const response = await runQuery(readQuery);
-          console.log('\r\nresponse.data: ',JSON.stringify(response.data));
+          // console.log('\r\nresponse.data: ',JSON.stringify(response.data));
           const attachments = [];
           let json = response.data.searchRecords;
           for (let i = 0; i < json.length; i++) {
@@ -50,7 +50,7 @@ const COMMAND_ID = "getAccountDetails";
                 owner: item.Owner.Name || '',
               },
               });
-            console.log('\r\nresultCard: ',resultCard);
+            // console.log('\r\nresultCard: ',resultCard);
             const preview = CardFactory.heroCard(item.Name, item.Type);
             const attachment = { ...CardFactory.adaptiveCard(resultCard), preview };
             attachments.push(attachment);

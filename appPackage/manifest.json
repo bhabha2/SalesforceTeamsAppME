@@ -1,6 +1,6 @@
 {
     "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
-    "version": "1.0.4",
+    "version": "1.0.8",
     "manifestVersion": "1.16",
     "id": "${{TEAMS_APP_ID}}",
     "packageName": "com.microsoft.teams.extension",
@@ -16,7 +16,7 @@
     },
     "description": {
         "short": "Help users fetch data from Salesforce",
-        "full": "Help users fetch data from Salesforce related to their accounts, contacts, and opportunities"
+        "full": "Get data from Salesforce like account details, opportunities & accunt owners"
     },
     "icons": {
         "outline": "outline.png",
@@ -45,7 +45,7 @@
                     "id": "getAccountDetails",
                     "type": "query",
                     "title": "Get Account Details",
-                    "description": "Get details of accounts from SalesForce",
+                    "description": "Given an account, get details of the same from SalesForce like account type, owner etc. from SalesForce",
                     "initialRun": false,
                     "fetchTask": false,
                     "context": [
@@ -64,8 +64,8 @@
                 {
                     "id": "getAccountOpportunities",
                     "type": "query",
-                    "title": "Lookup Account Opportunities",
-                    "description": "Lookup opportunities within an account",
+                    "title": "Search Opportunities at Account",
+                    "description": "Given an Account name, fetch details on the various sales opportunities within that account from SalesForce",
                     "initialRun": false,
                     "fetchTask": false,
                     "context": [
@@ -84,8 +84,8 @@
                 {
                     "id": "getOpportunitiesByOwner",
                     "type": "query",
-                    "title": "Opportunity Search by Owner",
-                    "description": "Lookup opportunities across accounts by owner",
+                    "title": "Search Opportunities by Owner",
+                    "description": "Given an Opportunity owner name, get list of sales opportunities across accounts managed by the Opportunity owner in SalesForce",
                     "initialRun": false,
                     "fetchTask": false,
                     "context": [
@@ -94,9 +94,9 @@
                     ],
                     "parameters": [
                         {
-                            "name": "Account Owner to be searched for opportunities",
-                            "title": "Account Owner",
-                            "description": "Name of the Account Owner whose opportunities need to be looked up",
+                            "name": "Opportunity Owner to be searched",
+                            "title": "Opportunity Owner",
+                            "description": "Name of the Opportunity Owner whose opportunities need to be looked up",
                             "inputType": "text"
                         }
                     ]
@@ -109,9 +109,5 @@
         "*.my.salesforce.com",
         "*.lightning.force.com",
         "${{BOT_DOMAIN}}"
-    ],
-    "webApplicationInfo": {
-        "id": "${{BOT_ID}}",
-        "resource": "api://${{BOT_ID}}"
-    }
+    ]
 }
