@@ -15,19 +15,61 @@ This app template is a search-based [message extension](https://docs.microsoft.c
 > - [Teams Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Teams Toolkit CLI](https://aka.ms/teams-toolkit-cli)
 > - Join Microsoft 365 Copilot Plugin development [early access program](https://aka.ms/plugins-dev-waitlist).
 
-1. First, select the Teams Toolkit icon on the left in the VS Code toolbar.
-2. In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
-3. To directly trigger the Message Extension in Teams, you can:
-   1. Press F5 to start debugging which launches your app in Teams using a web browser. Select `Debug in Teams (Edge)` or `Debug in Teams (Chrome)`.
-   2. When Teams launches in the browser, select the Add button in the dialog to install your app to Teams.
-   3. `@mention` Your message extension from the `search box area`, `@mention` your message extension from the `compose message area` or click the `...` under compose message area to find your message extension.
-4. To trigger the Message Extension through Copilot, you can:
-   1. Select `Debug in Copilot (Edge)` or `Debug in Copilot (Chrome)` from the launch configuration dropdown.
-   2. When Teams launches in the browser, click the `Apps` icon from Teams client left rail to open Teams app store and search for `Copilot`.
-   3. Open the `Copilot` app and send a prompt to trigger your plugin.
-   4. Send a message to Copilot to find an NPM package information. For example: `Find the npm package info on teamsfx-react`.
-      > Note: This prompt may not always make Copilot include a response from your message extension. If it happens, try some other prompts or leave a feedback to us by thumbing down the Copilot response and leave a message tagged with [MessageExtension].
+1. Login to Salesforce and goto Settings --> App Manager --> New Connected App.
+   - Fill in the details and create the API client.
+   - Enable OAuth settings & ensure that the callback url is saved as https://token.botframework.com/.auth/web/redirect
+   - Select appropriate scopes & enable the authorization & token exchange flow as required to ensure security while invoking the apis.
+   - Once the app is created, select Manage Consumer Details. 
+   - Enter the passcode sent to the email used while creating the app.
+   - Note down the Client ID & Secret. We will need this while configuration the OAuth connection in Azure.
+![alt text](image-7.png)
+![alt text](image-8.png)
+![alt text](image-9.png)
+![alt text](image-10.png)
+![alt text](image-11.png)
+![alt text](image-12.png)
 
+2. **Using Visual Studio:**
+   - Select the Teams Toolkit icon on the left in the VS Code toolbar.
+   - In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
+   - Go to src\Config.js and modify the baseURL to point to your instance of ServiceNow.
+
+3. **Login to Azure** & create a resource group to deploy the solution. Copy the tenant-id and resource group name.
+
+4. **In Visual studio**, enter the values copied above in .env.dev file under env folder.
+   ![alt text](image.png)
+
+   - Using the Teams Toolkit menu, under Lifecycle - choose each of the options Provision & Deploy sequentially. This will create the necessary configuration and deploy the app & bot in Azure within the Resource group created in earlier step above.
+
+   - Wait for the deployment to be successfully completed.
+
+5. **Login to Azure**  
+   - click on the bot under the resource group
+![alt text](image-1.png)
+
+   - Select Configuration & click on Add OAuth Connection Settings to enter the OAuth Connection details created in Step 1 & save the same.
+![alt text](image-2.png)
+
+   - Back in Configuration, copy the bot, password & the OAuth Connection Name by clicking on the edit options
+![alt text](image-3.png)
+
+6. **Using Visual Studio** Create .env file under the src folder and update the bot Id, password & the OAuth Connection Name:
+![alt text](image-4.png)
+
+   - Redeploy the solution using the deploy option from the Teams toolkit.
+
+   - Click on Publish option from the Teams toolkit to create the App Package file.
+
+7. Using a Teams environment with access to upload custom apps, 
+   - upload the app package found appPackage\build folder.
+![alt text](image-5.png)
+
+8. To trigger the app as Message Extension, `@mention` Your message extension from the `search box area`, `@mention` your message extension from the `compose message area` or click the `...` under compose message area to find your message extension.
+
+9. To trigger the Message Extension through Copilot as a Plugin, you can:
+   a. Open the `Copilot` app and enable the plugin from Plugin popup list. 
+   b. send a prompt to trigger your plugin.
+      > Note: This prompt may not always make Copilot include a response from your message extension. If it happens, try some other prompts or leave a feedback to us by thumbing down the Copilot response and leave a message tagged with [MessageExtension].
 **Congratulations**! You are running an application that can now search npm registries in Teams and Copilot.
 
 ![Search ME Copilot](https://github.com/OfficeDev/TeamsFx/assets/107838226/a718b206-33ed-4d3e-99af-376c1f159c2b)
