@@ -24,15 +24,10 @@ const COMMAND_ID = "getAccountDetails";
         'Cookie': ''    
       },
     };
-            // console.log('readQuery: ',readQuery);
-            // console.log('config.url: ',config.url);
-        // axios.request(config)
-        // .then((response) => {
           try
           {
           const response = await axios.request(config);
-          // const response = await runQuery(readQuery);
-          // console.log('\r\nresponse.data: ',JSON.stringify(response.data));
+
           const attachments = [];
           let json = response.data.searchRecords;
           for (let i = 0; i < json.length; i++) {
@@ -70,16 +65,3 @@ const COMMAND_ID = "getAccountDetails";
       }
 }
 module.exports ={ COMMAND_ID, handleTeamsMessagingExtensionQuery };
-
-
-// response.data:  
-// {"searchRecords":[
-//   {"attributes":{"type":"Account","url":"/services/data/v60.0/sobjects/Account/001B000001OnByPIAV"},
-//   "Id":"001B000001OnByPIAV",
-//   "Name":"Air Tahiti",
-//   "Type":"Prospect",
-//   "Industry":"Manufacturing",
-//   "Website":"www.acme.com",
-//   "Owner":{"attributes":{"type":"User","url":"/services/data/v60.0/sobjects/User/005B0000008A3YtIAK"},"Name":"Cameron Davis"}
-// }]}
-// resultCard:  {type: 'AdaptiveCard','$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',version: '1.5',body: [{type: 'TextBlock',text: '${user}',wrap: true,style: 'heading',size: 'Large'},{ type: 'Container', items: [Array] },{type: 'TextBlock',text: '001B000001OnByPIAV',wrap: true,style: 'default',size: 'Default',isVisible: 'false'}]}
