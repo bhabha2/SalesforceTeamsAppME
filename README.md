@@ -10,58 +10,59 @@ This app template is a search-based [message extension](https://docs.microsoft.c
 >
 > - [Node.js](https://nodejs.org/), supported versions: 16, 18
 > - A [Microsoft 365 account for development](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts)
+> - Access to Salesforce environment to create connected App
 > - [Set up your dev environment for extending Teams apps across Microsoft 365](https://aka.ms/teamsfx-m365-apps-prerequisites)
 >   Please note that after you enrolled your developer tenant in Office 365 Target Release, it may take couple days for the enrollment to take effect.
 > - [Teams Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Teams Toolkit CLI](https://aka.ms/teams-toolkit-cli)
 > - Microsoft 365 Copilot enabled environment.
-
-1. Login to Salesforce and goto Settings --> App Manager --> New Connected App.
+## Create connected App in Salesforce
+1. Login to Salesforce and go to Settings --> App Manager --> New Connected App.
+![Navigate to SalesForce New Connected App screen](image-7.png)
    - Fill in the details and create the API client.
    - Enable OAuth settings & ensure that the callback url is saved as https://token.botframework.com/.auth/web/redirect
-   - Select appropriate scopes & enable the authorization & token exchange flow as required to ensure security while invoking the apis.
-   - Once the app is created, select Manage Consumer Details. 
-   - Enter the passcode sent to the email used while creating the app.
-   - Note down the Client ID & Secret. We will need this while configuration the OAuth connection in Azure.
-![alt text](image-7.png)
 ![alt text](image-8.png)
+   - Select appropriate scopes & enable the authorization & token exchange flow as required to ensure security while invoking the apis.
 ![alt text](image-9.png)
 ![alt text](image-10.png)
+   - Once the app is created, select Manage Consumer Details. 
+   - Enter the passcode sent to the email used while creating the app.
 ![alt text](image-11.png)
+   - Note down the Client ID & Secret. We will need this while configuration the OAuth connection in Azure.
 ![alt text](image-12.png)
 
-2. **Using Visual Studio:**
+2. **Visual Studio Code - Teams toolkit:**
    - Select the Teams Toolkit icon on the left in the VS Code toolbar.
    - In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
-   - Go to src\Config.js and modify the baseURL to point to your instance of ServiceNow.
 
-3. **Login to Azure** & create a resource group to deploy the solution. Copy the tenant-id and resource group name.
+3. **Login to Azure** & create a resource group to deploy the solution. Copy the subscription-id and resource group name.
 
 4. **In Visual studio**, enter the values copied above in .env.dev file under env folder.
    ![alt text](image.png)
 
-   - Using the Teams Toolkit menu, under Lifecycle - choose each of the options Provision & Deploy sequentially. This will create the necessary configuration and deploy the app & bot in Azure within the Resource group created in earlier step above.
+   - Using the Teams Toolkit menu, under Lifecycle - choose each of the options Provision & Deploy sequentially.  
+   This will create the necessary configuration and deploy the app & bot in Azure within the Resource group created in earlier step above.
 
    - Wait for the deployment to be successfully completed.
 
 5. **Login to Azure**  
-   - click on the bot under the resource group
+   - Click on the bot created under the resource group. Check for Azure bot in the resource type column.
 ![alt text](image-1.png)
 
-   - Select Configuration & click on Add OAuth Connection Settings to enter the OAuth Connection details created in Step 1 & save the same.
+   - Select Configuration & click on `Add OAuth Connection Settings` button to enter the OAuth Connection details created in Step 1 & save the same.
 ![alt text](image-2.png)
 
-   - Back in Configuration, copy the bot, password & the OAuth Connection Name by clicking on the edit options
+   - Back in Configuration, copy the values for `BOT_ID`, `BOT_PASSWORD` by clicking on the edit options
 ![alt text](image-3.png)
 
-6. **Using Visual Studio** Create .env file under the src folder and update the bot Id, password & the OAuth Connection Name:
+6. **Using Visual Studio** Create .env file under the src folder and update the values for MicrosoftAppId(`BOT_ID`), MicrosoftAppPassword (`BOT_PASSWORD`) & connectionName (`OAuth Connection Name`):  
 ![alt text](image-4.png)
 
-   - Redeploy the solution using the deploy option from the Teams toolkit.
+   - Redeploy the solution using the `Deploy` option from the Teams toolkit.
 
-   - Click on Publish option from the Teams toolkit to create the App Package file.
+   - Click on `Publish` option from the Teams toolkit to create the App Package file.
 
 7. Using a Teams environment with access to upload custom apps, 
-   - upload the app package found appPackage\build folder.
+   - upload the app package found appPackage\build folder using the `Upload an app` option.
 ![alt text](image-5.png)
 
 8. To trigger the app as Message Extension, `@mention` Your message extension from the `search box area`, `@mention` your message extension from the `compose message area` or click the `...` under compose message area to find your message extension.
