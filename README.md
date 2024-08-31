@@ -1,6 +1,7 @@
-# Overview of Custom Search Results template
+# Overview of Salesforce Teams Message Extension sample
 
-This app template is a search-based [message extension](https://docs.microsoft.com/microsoftteams/platform/messaging-extensions/what-are-messaging-extensions?tabs=nodejs) that allows users to search an external system and share results through the compose message area of the Microsoft Teams client. You can now build and run your search-based message extensions in Teams, Copilot for Windows desktop and web experiences.
+The purpose of this sample app is to showcase how to build a message extension in a Teams App that can be used as a M365 Copilot Plugin.  
+[Message extension](https://docs.microsoft.com/microsoftteams/platform/messaging-extensions/what-are-messaging-extensions?tabs=nodejs) allows users to search for information in an external system and share results through a Copilot Prompt or the compose message area of the Microsoft Teams client. You can now build and run your search-based message extensions in Teams, Copilot for Windows desktop and web experiences.
 
 ## Get started with the template
 
@@ -10,67 +11,75 @@ This app template is a search-based [message extension](https://docs.microsoft.c
 >
 > - [Node.js](https://nodejs.org/), supported versions: 16, 18
 > - A [Microsoft 365 account for development](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts)
+> - Access to Salesforce environment to create connected App
 > - [Set up your dev environment for extending Teams apps across Microsoft 365](https://aka.ms/teamsfx-m365-apps-prerequisites)
 >   Please note that after you enrolled your developer tenant in Office 365 Target Release, it may take couple days for the enrollment to take effect.
 > - [Teams Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Teams Toolkit CLI](https://aka.ms/teams-toolkit-cli)
-> - Join Microsoft 365 Copilot Plugin development [early access program](https://aka.ms/plugins-dev-waitlist).
-
-1. Login to Salesforce and goto Settings --> App Manager --> New Connected App.
+> - Microsoft 365 Copilot enabled environment.
+## Create connected App in Salesforce
+1. Login to Salesforce and go to Settings --> App Manager --> New Connected App.
+![Navigate to SalesForce New Connected App screen](image-7.png)
    - Fill in the details and create the API client.
    - Enable OAuth settings & ensure that the callback url is saved as https://token.botframework.com/.auth/web/redirect
-   - Select appropriate scopes & enable the authorization & token exchange flow as required to ensure security while invoking the apis.
-   - Once the app is created, select Manage Consumer Details. 
-   - Enter the passcode sent to the email used while creating the app.
-   - Note down the Client ID & Secret. We will need this while configuration the OAuth connection in Azure.
-![alt text](image-7.png)
 ![alt text](image-8.png)
+   - Select appropriate scopes & enable the authorization & token exchange flow as required to ensure security while invoking the apis.
 ![alt text](image-9.png)
 ![alt text](image-10.png)
+   - Once the app is created, select Manage Consumer Details. 
+   - Enter the passcode sent to the email used while creating the app.
 ![alt text](image-11.png)
+   - Note down the Client ID & Secret. We will need this while configuration the OAuth connection in Azure.
 ![alt text](image-12.png)
 
-2. **Using Visual Studio:**
+2. **Visual Studio Code - Teams toolkit:**
    - Select the Teams Toolkit icon on the left in the VS Code toolbar.
    - In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
-   - Go to src\Config.js and modify the baseURL to point to your instance of ServiceNow.
 
-3. **Login to Azure** & create a resource group to deploy the solution. Copy the tenant-id and resource group name.
+3. **Login to Azure** & create a resource group to deploy the solution. Copy the subscription-id and resource group name.
 
 4. **In Visual studio**, enter the values copied above in .env.dev file under env folder.
    ![alt text](image.png)
 
-   - Using the Teams Toolkit menu, under Lifecycle - choose each of the options Provision & Deploy sequentially. This will create the necessary configuration and deploy the app & bot in Azure within the Resource group created in earlier step above.
+   - Using the Teams Toolkit menu, under Lifecycle - choose each of the options Provision & Deploy sequentially.  
+   Provision will setup & fetch the necessary configuration parameters required to deploy the app in azure and  
+   Deploy will deploy the app & bot in Azure within the Resource group created in earlier step above.
 
    - Wait for the deployment to be successfully completed.
 
 5. **Login to Azure**  
-   - click on the bot under the resource group
+   - Click on the bot created under the resource group. Check for Azure bot in the resource type column.
+![alt text](image-13.png)
+
+   - Select Configuration & click on `Add OAuth Connection Settings` button to enter the OAuth Connection details created in Step 1 & save the same.
 ![alt text](image-1.png)
 
-   - Select Configuration & click on Add OAuth Connection Settings to enter the OAuth Connection details created in Step 1 & save the same.
+   - Go back to Overview view of the resurce group and select the Azure App. Under Settings on the left menu, select Configuration & copy the values for `BOT_ID`, `BOT_PASSWORD` by clicking on the edit options
 ![alt text](image-2.png)
 
-   - Back in Configuration, copy the bot, password & the OAuth Connection Name by clicking on the edit options
-![alt text](image-3.png)
-
-6. **Using Visual Studio** Create .env file under the src folder and update the bot Id, password & the OAuth Connection Name:
+6. **Using Visual Studio** Create .env file under the src folder and include the values for MicrosoftAppId(`BOT_ID`), MicrosoftAppPassword (`BOT_PASSWORD`) & connectionName (`OAuth Connection Name`):  
 ![alt text](image-4.png)
 
-   - Redeploy the solution using the deploy option from the Teams toolkit.
+   - Redeploy the solution using the `Deploy` option from the Teams toolkit.
 
-   - Click on Publish option from the Teams toolkit to create the App Package file.
+   - Click on `Publish` option from the Teams toolkit to create the App Package file.  
+   Publish will create the App Package file that includes the App manifest.json file. Confirming the publish will publish the latest app package to your Teams environment. Once published, the app will need to be approved by Teams Admin via the Teams Admin center.
+   If you wish to publish the app in another environment, you can upload this package file there.
 
 7. Using a Teams environment with access to upload custom apps, 
-   - upload the app package found appPackage\build folder.
+   - upload the manifest.zip package found appPackage\build folder using the `Upload an app` option.
 ![alt text](image-5.png)
 
-8. To trigger the app as Message Extension, `@mention` Your message extension from the `search box area`, `@mention` your message extension from the `compose message area` or click the `...` under compose message area to find your message extension.
+8. To trigger the app as Message Extension, `@mention` Your message extension from the `search box area`, `@mention` your message extension from the `compose message area` or click the `➕` under compose message area to find your message extension.
 
-9. To trigger the Message Extension through Copilot as a Plugin, you can:
-   a. Open the `Copilot` app and enable the plugin from Plugin popup list. 
+9. To trigger the Message Extension through Copilot as a Plugin, you can:  
+   a. Open the `Copilot` app and enable the plugin from Plugin popup list.  
    b. send a prompt to trigger your plugin.
-      > Note: This prompt may not always make Copilot include a response from your message extension. If it happens, try some other prompts or leave a feedback to us by thumbing down the Copilot response and leave a message tagged with [MessageExtension].
-**Congratulations**! You are running an application that can now search npm registries in Teams and Copilot.
+      > Note: This prompt may not always make Copilot include a response from your message extension. If it happens, try some other prompts or leave a feedback to us by thumbing down the Copilot response and leave a message tagged with [MessageExtension].  
+      You may want to include a note that says current this only works in Copilot chat in Teams. It does not work in
+https://copilot.microsoft.com
+(Work or Web).
+
+**Congratulations**! You can now search Salesforce opportunities in Teams via Copilot.
 
 ![Search ME Copilot](https://github.com/OfficeDev/TeamsFx/assets/107838226/a718b206-33ed-4d3e-99af-376c1f159c2b)
 
@@ -97,6 +106,25 @@ The following are Teams Toolkit specific project files. You can [visit a complet
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `teamsapp.yml`       | This is the main Teams Toolkit project file. The project file defines two primary things: Properties and configuration Stage definitions. |
 | `teamsapp.local.yml` | This overrides `teamsapp.yml` with actions that enable local execution and debugging.                                                     |
+### Troubleshooting tip
+If you're facing challenges while testing your plugin, you can enable 'developer mode'. Developer mode provides information on the plugin selected by the Copilot orchestrator to respond to the prompt. It also shows the available functions in the plugin and the API call's status code.
+ 
+To enable developer mode, type the following into Copilot:
+```
+-developer on
+```
+For additional information on common problems and how to fix them, see the  [troubleshooting](Troubleshooting.md) guide.
+ 
+Now just execute your prompt. This time, the output will look like this:
+ 
+![The developer mode in action](./images/03-03b-developer-mode.png)
+ 
+As you can notice, below the response generated by Copilot, we have a table that provides us insightful information about what happened behind the scenes:
+ 
+- Under **Enabled plugins**, we can see that Copilot has identified that the Northwind Inventory plugin is enabled.
+- Under **Matched functions**, we can see that Copilot has determined that the Northwind inventory plugin offers three functions: `inventorySearch`, `discountSearch`, and `companySearch`.
+- Under **Selected functions for execution**, we can see that Copilot has selected the `inventorySearch` function to respond to the prompt.
+- Under **Function execution details**, we can see some detailed information about the execution, like the HTTP response returned by the plugin to the Copilot engine.
 
 ## Extend the template
 
